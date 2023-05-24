@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./jquery.js"></script>
+    <link rel="stylesheet" href="./bootstrap.css"/>
+</head>
+<body>
+    <!--1.上传文件框 -->
+    <input type="file" id="file1"/>
+    <!--2. 文件上传按钮 -->
+    <button id="btnUpload">上传文件</button>
+
+    <!-- 3. 验证图片 -->
+    <img src="" id="img" width="300px">
+
+
+    <div class="progress" style="width: 500px; margin: 15px 10px;" id="box1">
+        <div class="progress-bar progress-bar-striped active" style="width: 0%" id="box2">
+          0%
+        </div>
+      </div>
+
+
+
+<script>
+    // 验证用户是否上传了文件
+    // 获取上传文件按钮
+    var btn = document.querySelector('#btnUpload')
+    // 绑定点击事件
+    btn.addEventListener('click',function(){
+        // 获取选择到的文件
+        var files = document.querySelector('#file1').files
+        if(files.length <= 0){
+            return alert('请选择上传文件！')
+        }
+        console.log('文件选择成功');
+        // 向Formdata中追加文件
+        var fd = new FormData()
+        fd.append('avatar',files[0])
+
+
+
+        // 使用xhr上传文件
+        var xhr = new XMLHttpRequest()
+
+        // 显示文件的上传进度
+        // 监听xhr.upload中的onprogress事件
+        xhr.upload.onprogress = function(e){
+        // e.lengthComputable是一个布尔值，表示当前上传的资源是否有可计算的长度
+        if(e.lengthComputable){
+
+            // 清除上传前的样式，改为成功后的上传样式
+            xhr.upload.onload = function(){
+                // removeClass()清除原本的样式
+                // addClass()添加新的样式
+                $('#box2').removeClass().addClass('progress-bar progress-bar-success')
+            }
+            // e.loaded 已上传字节
+            // e.total 需要上传的总字节
+            var percentComplete = Math.ceil((e.loaded / e.total)* 100)
+            $('#box2').attr('style','width:'+ percentComplete + '%').html(percentComplete +'%')
+            console.log(percentComplete);
+        }
+
+        }
+        xhr.open('POST','http://www.liulongbin.top:3006/api/upload/avatar')
+        // 使用send上传数据
+        xhr.send(fd)
+
+
+
+
+        // 监听进程状态事件
+        xhr.onreadystatechange = function(){
+            if(xhr.readyState === 4 && xhr.status === 200){
+                // 将返回数据变为对象赋给data
+                var data = JSON.parse(xhr.responseText)
+                console.log(data);
+                if(data.status === 200){
+                    // 选择图片标签，将服务器返回的url添加到图片标签中
+                    document.querySelector('#img').src ='http://www.liulongbin.top:3006'+ data.url
+                    console.log(data.message);
+                }else{
+                    console.log('上传失败！');
+                }
+            }
+        }
+    })
+    
+    </script>
+</body>
+</html>

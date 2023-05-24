@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <!-- 导入页面的基本样式 -->
+    <link rel="stylesheet" href="./css/search.css" />
+    <!-- 导入 jQuery -->
+    <script src="./lib/jquery.js"></script>
+    <!-- 导入模板引擎JS文件 -->
+    <script src="./lib/template-web.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Logo -->
+      <img src="./images/taobao_logo.png" alt="" class="logo" />
+
+      <div class="box">
+        <!-- tab 栏 -->
+        <div class="tabs">
+          <div class="tab-active">宝贝</div>
+          <div>店铺</div>
+        </div>
+        <!-- 搜索区域（搜索框和搜索按钮） -->
+        <div class="search-box">
+          <input id="ipt" type="text" class="ipt" placeholder="请输入要搜索的内容" />
+          <button class="btnSearch">搜索</button>
+        </div>
+        <!-- 搜索建议列表 -->
+        <div id="suggest-list"></div>
+      </div>
+    </div>
+  </body>
+  <script>
+    $(function(){
+      // 定义延时器id
+      var timer = null;
+
+      // 定义缓存对象
+      var cacheObj = {}
+
+      // 定义防抖函数
+      function debounceSearch(kw){
+        // 延时器调用的列表赋给timer
+        timer = setTimeout(function(){
+
+          getSuggestList(kw)
+
+        },1000)
+      }
+
+
+
+      // 获取输入框的输入数据
+      $('#ipt').on('keyup',function(){
+        // 发生事件之后，直接清除掉timer的值
+        clearTimeout(timer)
+
+        var keywords = $('#ipt').val().trim()
+        if(keywords <=0){
+          return $('#suggest-list').empty().hide()
+        }
+
+        // 判断缓存中有没有数据
+        if(cacheObj[keywords]){
+          return renderSuggestList(cacheObj[keywords])
+        }
+
+        // console.log(keywords);
+        // getSuggestList(keywords)
+
+        debounceSearch(keywords)
+      })
+
+
+      // 发送jsonp请求 获取搜索建议列表
+      function getSuggestList(keywords){
+        $.ajax({
+          url:'https://suggest.taobao.com/sug?q='+keywords,
+          dataType:'jsonp',
+          success:function(res){
+            console.log(res);
+            renderSuggestList(res)
+          }
+        })
+      }
+
+      // 渲染UI结构
+      function renderSuggestList(res){
+        if(res.result.length <= 0){
+          return $('#suggest-list').empty().hide()
+        }
+
+        var htmlstr = template('tpl-suggestList',res)
+        $('#suggest-list').html(htmlstr).show()
+
+        // 获取用户的输入
+        var k = $('#ipt').val().trim()
+        // 将获取的列表数据存到缓存对象中去
+        cacheObj[k] = res`
+
+
+      }
+    })
+  </script>
+  <script type="text/html" id="tpl-suggestList">
+    {{each result}}
+      <div class="suggest-item" >{{$value[0]}}</div>
+    {{/each}}
+  </script>
+</html>

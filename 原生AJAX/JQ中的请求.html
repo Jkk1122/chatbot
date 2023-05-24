@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./jquery.js"></script>
+</head>
+<body>
+    <button class="btn1">GET</button>
+    <button class="btn2">POST</button>
+    <button class="btn3">AJAX-GET</button>
+    <button class="btn4">AJAX-POST</button>
+</body>
+<script>
+    $(function(){
+        $('.btn1').on('click',function(){
+            $.get('http://www.liulongbin.top:3006/api/getbooks',{id :1},function(res){
+                console.log(res);
+            })
+        })
+        $('.btn2').on('click',function(){
+            $.post('http://www.liulongbin.top:3006/api/addbook',
+            {
+                bookname:'祈祷落幕时',author:'东野圭吾',publisher:'南海出版社',
+            },function(res){
+                console.log(res);
+            }) 
+        })
+        $('.btn3').on('click',function(){
+            $.ajax({
+                type:'GET',
+                url:'http://www.liulongbin.top:3006/api/getbooks',
+                data:{
+                    id:1,
+                },
+                success:function(res){
+                    console.log(res);
+                }
+            })
+        })
+        $('.btn4').on('click',function(){
+            $.ajax({
+                type:'POST',
+                url:'http://www.liulongbin.top:3006/api/addbook',
+                data:{
+                    bookname:'金瓶梅',
+                    author:'赵泓翔',
+                    publisher:'电子出版社',
+                },
+                success:function(res){
+                    console.log(res);
+                }
+            })
+        })
+    })
+</script>
+</html>

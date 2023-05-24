@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./jquery.js"></script>
+</head>
+<body>
+    <button id="btn">发起JSONP请求</button>
+</body>
+<script>
+    $(function(){
+        $('#btn').on('click',function(){                               
+            $.ajax({
+                // 必须设置dataType来确定它为jsonp，否则就会发起ajax请求
+                dataType:'jsonp',
+                url:'http://www.liulongbin.top:3006/api/jsonp?location=西安市&address=长安区',
+                // 可以定义callback
+                jsonp:'callback',
+                // 定义回调函数名
+                jsonpCallback:'success',
+                success:function(res){
+                    console.log(res);              
+                }
+            })
+        })
+    })
+</script>
+</html>

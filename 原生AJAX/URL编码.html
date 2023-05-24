@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- URL的编码与解码 -->
+    <div>贾新科</div>
+    <div>张子怡</div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+</body>
+<script>
+    const box = document.querySelectorAll('div')
+    const str = encodeURI(box[0])
+    console.log(str);
+    // URL编码
+    box[2].innerHTML = encodeURI(box[0].innerHTML)
+    box[3].innerHTML = encodeURI(box[1].innerHTML)
+    // URL解码
+    box[4].innerHTML = decodeURI(box[2].innerHTML)
+    box[5].innerHTML = decodeURI(box[3].innerHTML)
+    // 大多不用编码进行操作，浏览器会完成
+</script>
+</html>

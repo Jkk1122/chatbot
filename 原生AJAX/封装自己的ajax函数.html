@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./xuptjxk.js"></script>
+</head>
+<body>
+    <script>
+        xuptJxk({
+            method:'get',
+            url:'http://www.liulongbin.top:3006/api/getbooks',
+            data:{
+                id:1
+            },
+            success:function(res){
+                console.log(res);
+            }
+        })
+        xuptJxk({
+            method:'post',
+            url:'http://www.liulongbin.top:3006/api/addbook',
+            data:{
+                bookname:'jiaji',
+                author:'shinaian',
+                publisher:'xinan'
+            },
+            success:function(res){
+                console.log(res);
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./news.css" />
+    <script src="./jquery.js"></script>
+    <!-- 调入模板引擎的文件template -->
+    <script src="./template-web.js"></script>
+    <script src="./news.js"></script>
+  </head>
+  <body>
+
+    <div id="news-list"></div>
+    <!-- 定义模板 -->
+    <script type="text/html" id="tpl_news">
+        {{each data}}
+        <div class="news-item">
+            <img class="thumb" src="{{'http://www.liulongbin.top:3006' +$value.img}}" alt="" />
+            <div class="right-box">
+              <h1 class="title">{{$value.title}}</h1>
+              <div class="tags">
+                <!-- 对返回数据tags进行遍历，首次的$value为data数组的数据 -->
+                {{each $value.tags}}
+                <!-- 下面的$value为tags数组的数据 -->
+                <span>{{$value}}</span>
+                {{/each}}
+              </div>
+              <div class="footer">
+                <div>
+                  <span>{{$value.source}}</span>&nbsp;&nbsp;
+                  <!-- 对时间数据进行过滤处理，通过管道符号连接，前半部分输出作为后半部分的输入 -->
+                  <span>{{$value.time | dateFormat}}</span>
+                </div>
+                <span>评论数：{{$value.cmtcount}}</span>
+              </div>
+            </div>
+          </div>
+        {{/each}}
+    </script>
+  </body>
+</html>

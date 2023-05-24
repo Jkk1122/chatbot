@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./jquery.js"></script>
+</head>
+<body>
+    <!-- 文件选择框 -->
+    <input type="file"id="file1"/>
+    <!-- 文件上传按钮 -->
+    <button type="submit" id="btnupload">上传文件</button>
+    <!-- 图片标签 -->
+    <img src="./loading.gif" id="img" style="display: none;"/>
+</body>
+<script>
+    $(function(){
+        // 监视ajax请求被发起
+        $(document).ajaxStart(function(){
+            $('#img').show()
+        })
+        // 监视ajax请求结束 
+        $(document).ajaxStop(function(){
+            $('#img').hide()
+        })
+
+
+
+        // 1.先实现文件的选择判断
+        $('#btnupload').on('click',function(){
+            var files = $('#file1')[0].files
+            if(files.length <=0){
+                return alert(('选择文件后上传'))
+            }
+            console.log('文件选择成功');
+            // 2向formdata中上传文件
+            var fd = new FormData()
+            fd.append('avatar',files[0])
+
+
+            // 使用jquery发起文件上传请求
+            $.ajax({
+                method:'POST',
+                url:'http://www.liulongbin.top:3006/api/upload/avatar',
+                data: fd,
+                // 不更改contentType的属性值，使用默认值
+                contentType:false,
+                // 不对formData数据进行url编码，原样发送到服务器中
+                processData:false,
+                success:function(res){
+                    console.log(res);
+                }
+            })
+
+        })
+    })
+
+</script>
+</html>

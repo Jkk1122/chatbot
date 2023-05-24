@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HELLO AJAX POST</title>
+    <style>
+        .box{
+            width: 200px;
+            height: 100px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <div class="box"></div>
+</body>
+<script>
+    //获取元素
+    const box = document.querySelector('.box');
+    //绑定事件
+    box.addEventListener("mouseover",function(){
+        //1.创建初始对象
+        const xhr = new XMLHttpRequest();
+        //2.初始化  设置请求方法和url
+        xhr.open('POST','http://127.0.0.1:8000/server');
+        //设置请求头    设置Content-Type的属性
+        xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+        // xhr.setRequestHeader('name','jiaxinke');
+        //3.发送    
+        xhr.send('a=100&b=5656');
+        //4.事件绑定，处理返回的结果
+        xhr.onreadystatechange = function(){
+            //判断服务器返回的结果
+            if(xhr.readyState ===4){
+                //判断反应码
+                if(xhr.status >=200 && xhr.status <300){
+                    box.innerHTML = xhr.response;
+                }
+            }
+
+        }
+    })
+
+</script>
+</html>
